@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Where we are now: handoff summary and branch plan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700&display=swap">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#C9A66B; --board:#E2C894; --note:#FFFDF2; --ink:#2B1F3F; --muted:#5B4B73;
+  --mint:#A8E6CF; --yellow:#FFE45E; --pink:#FF9EB5; --sky:#7EC8E3; --violet:#4A2C7A;
+  --shadow:rgba(60,40,10,.28); --code:#F1EBD8;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#2A2118; --board:#3A2E21; --note:#33293F; --ink:#F4EEDD; --muted:#CBBFE0;
+    --shadow:rgba(0,0,0,.5); --code:#241C33; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#2A2118; --board:#3A2E21; --note:#33293F; --ink:#F4EEDD; --muted:#CBBFE0;
+  --shadow:rgba(0,0,0,.5); --code:#241C33; color-scheme:dark;
+}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
+  font:400 17px/1.6 "Nunito","Segoe UI",system-ui,sans-serif}
+.page{max-width:780px;margin:0 auto;padding:28px 18px 64px}
+h1,h2,h3{font-family:"Patrick Hand","Comic Sans MS","Chalkboard SE",cursive;font-weight:400;line-height:1.15;margin:0}
+h1{font-size:clamp(2.3rem,7vw,3.6rem);margin-bottom:10px}
+h2{font-size:1.9rem;margin:44px 0 14px}
+h3{font-size:1.35rem;margin-bottom:6px}
+p{margin:0 0 12px;max-width:68ch}
+.lede{font-size:1.1rem;color:var(--muted)}
+.note{position:relative;background:var(--note);padding:22px 20px 18px;margin:20px 0;
+  box-shadow:0 6px 14px var(--shadow);border-radius:3px}
+.note::before{content:"";position:absolute;top:-11px;left:50%;width:92px;height:24px;
+  transform:translateX(-50%) rotate(-2deg);background:var(--tape,var(--yellow));opacity:.92;
+  border-radius:2px;box-shadow:0 1px 3px var(--shadow)}
+.note.mint{--tape:var(--mint)} .note.yellow{--tape:var(--yellow)} .note.pink{--tape:var(--pink)} .note.sky{--tape:var(--sky)}
+.tilt-l{transform:rotate(-.6deg)} .tilt-r{transform:rotate(.5deg)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 0;padding:0;list-style:none;font-size:.95rem}
+.legend li{display:flex;align-items:center;gap:8px;background:var(--note);padding:5px 12px;border-radius:3px;box-shadow:0 2px 6px var(--shadow)}
+.dot{width:26px;height:12px;border-radius:2px;display:inline-block}
+ul.tight{margin:6px 0 0;padding-left:1.2em} ul.tight li{margin:4px 0}
+.timeline{position:relative;margin-left:8px;padding-left:22px;border-left:3px dashed var(--violet)}
+.timeline .note{margin:26px 0}
+.phase{font-family:"Patrick Hand","Comic Sans MS",cursive;font-size:1.05rem;color:var(--violet)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .phase{color:var(--sky)} :root:not([data-theme="light"]) .timeline{border-color:var(--sky)}}
+:root[data-theme="dark"] .phase{color:var(--sky)} :root[data-theme="dark"] .timeline{border-color:var(--sky)}
+.table-wrap{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;min-width:560px;background:var(--note);box-shadow:0 6px 14px var(--shadow)}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px dashed var(--muted);vertical-align:top}
+th{font-family:"Patrick Hand","Comic Sans MS",cursive;font-weight:400;font-size:1.15rem}
+pre{background:var(--code);padding:16px;border-radius:3px;overflow-x:auto;margin:10px 0;font:400 .9rem/1.55 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap}
+button{font:600 1rem "Nunito",sans-serif;background:var(--yellow);color:#2B1F3F;border:2px solid #2B1F3F;border-radius:4px;padding:8px 16px;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid var(--violet);outline-offset:3px}
+.honest{border:2px dashed var(--muted);padding:14px 16px;border-radius:3px;margin-top:40px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.note{transition:transform .2s}.note:hover{transform:rotate(0) translateY(-2px)}}
+</style>
+</head>
+<body>
+<main class="page">
+
+<h1>🧭 Where we are now</h1>
+<p class="lede">Summary of <code>claude-handoff.md</code>, an answer to your branch question, and a plan for the next session. Dated 2026-10-30.</p>
+<ul class="legend" aria-label="Tape colors">
+  <li><span class="dot" style="background:var(--mint)"></span>done</li>
+  <li><span class="dot" style="background:var(--yellow)"></span>in progress or pending</li>
+  <li><span class="dot" style="background:var(--pink)"></span>open risk</li>
+  <li><span class="dot" style="background:var(--sky)"></span>my opinion</li>
+</ul>
+
+<div class="note mint tilt-l">
+  <h3>📜 The story in one paragraph</h3>
+  <p>Claude was offline, so Grok started cherry-picking editor-drive fixes onto <code>claude</code> and left the sequencer mid-flight. Codex finished it: nine commits landed and one empty replay was skipped. Work then moved to a fresh <code>codex</code> branch, with more fixes cherry-picked back onto <code>claude</code>. The long “loading…” bug came down to launcher scope plus a testing artifact: the sandbox kills detached children, so the fix only counts as proven on the host.</p>
+</div>
+
+<h2>🌿 Your question: a branch from claude, merging Grok’s changes?</h2>
+<div class="note sky tilt-r">
+  <p>That is effectively what already happened, and I would keep it. <em>This is my opinion, not a measurement.</em></p>
+  <ul class="tight">
+    <li>🏛️ Keep <code>claude</code> as the one integration branch.</li>
+    <li>🧑‍🔧 Each agent works on its own branch (<code>grok</code>, <code>codex</code>, later <code>claude-work</code>).</li>
+    <li>🍒 Move work over as small, checked cherry-picks. The 25-conflict merge of <code>main</code> is your evidence against whole-branch merges.</li>
+    <li>📒 Keep one cherry-pick ledger: source hash, claude hash, what it does, how it was verified.</li>
+    <li>🛑 Do not push <code>claude</code> until you ask. It is ahead of <code>origin/claude</code>.</li>
+  </ul>
+</div>
+
+<h2>⏳ What happened, in order</h2>
+<div class="timeline">
+  <div class="note mint">
+    <span class="phase">Phase A · finishing Grok’s cherry-pick</span>
+    <p>HEAD was <code>c970ac3d1</code> with the sequencer live on <code>aef3bbf25</code>. Rules: never abort, stash, or reset; never <code>git add -A</code>; keep Claude’s newer camera and renderer code.</p>
+  </div>
+  <div class="note mint">
+    <span class="phase">Phase B · Codex completes it (10-29)</span>
+    <p>Nine commits landed (<code>60025ee08</code> to <code>751276399</code>); <code>4a4b3dbc7</code> replayed empty and was skipped. No push, launch, rebuild, or test run. A fresh <code>codex</code> branch was cut.</p>
+  </div>
+  <div class="note mint">
+    <span class="phase">Phase C · editor chrome and footer (10-30)</span>
+    <p>Canvas fills on the first frame, pets/chat bars bounded to 190px, <code>hero</code> and <code>xelector</code> hidden from the footer for rpg-edit-hq only, and a missing <code>-lm</code> link flag fixed.</p>
+  </div>
+  <div class="note mint">
+    <span class="phase">Phase D · the “loading…” investigation</span>
+    <p>The cause was launcher scope plus the sandbox reaping detached children. On the host the session stayed alive and a fresh 1260×571 frame showed the Bridge page. A cleanup mishap taught the lesson: do not broaden kill patterns.</p>
+  </div>
+  <div class="note pink">
+    <span class="phase">Mishap · an accidental commit</span>
+    <p><code>4daf6b01a</code> landed on <code>claude</code> by mistake. It was preserved on <code>codex</code> as <code>c924a1fa3</code>. Leave it, and record it in the ledger.</p>
+  </div>
+  <div class="note yellow">
+    <span class="phase">Phase E · drive edit/play (00:41 to 00:55)</span>
+    <p>New pages for rpg-space and mcl-hq were created and play-tested. A real bug surfaced: <code>newpage</code> removed <code>bar.txt</code> but copied <code>events.pdl</code>. Evidence: hero and xelector moved (8,8) to (8,9) and the ledgers grew. You then caught a stale projector and wiped party rows; both were corrected, but the last fix is still uncommitted.</p>
+  </div>
+</div>
+
+<h2>🚧 Still open</h2>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Item</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td>📝 Party-row correction</td><td>Needs a scoped commit, push to <code>origin/codex</code>, then a cherry-pick onto <code>claude</code>.</td></tr>
+    <tr><td>🌿 Checkout is <code>codex</code></td><td><code>claude</code> is intentionally unpushed.</td></tr>
+    <tr><td>🧪 No automated test run</td><td>The cherry-pick completion was verified by inspection and fresh runs only.</td></tr>
+    <tr><td>🔍 Pinned-bar text and footer cells</td><td>Do not remove until the <code>PLAY-SENSE.md</code> observations are reviewed.</td></tr>
+    <tr><td>🗂️ <code>/tmp/grok-merge-main</code></td><td>Stopped on 25 conflicts. Leave it alone.</td></tr>
+    <tr><td>📂 Runtime and session dirt</td><td>Never add <code>xyzfs/users</code>, pid files, logs, or <code>pieces/sessions</code>.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>💡 What I would change</h2>
+<div class="note sky tilt-l">
+  <ul class="tight">
+    <li>🧪 Turn the host-level launch check into a gate: <code>no_session=</code> empty, <code>canvas_raw</code> populated, a ledger row grew.</li>
+    <li>🏷️ Add a rule: a detached launch only counts as verified on the host.</li>
+    <li>🔒 Add a pre-commit check that prints the branch and refuses on the wrong one.</li>
+    <li>🍒 Write the cherry-pick ledger once, since the mapping is scattered across three handoff sections.</li>
+    <li>🧱 Declare an interface for the most-touched seams in <code>khtpm_core_render.c</code> and <code>petslike_core.c</code> to cut cross-agent conflicts.</li>
+  </ul>
+</div>
+
+<h2>🚀 Next-session prompt for Claude</h2>
+<pre id="prompt">You are resuming on branch `claude` in NNEST-12.00. First run: git status, git branch -vv, git log --oneline -15.
+Do not push. Do not merge whole branches. Do not stash, reset, or abort anything. Never `git add -A`.
+Read claude-handoff.md, then 21.drive-doc-fix/00-INDEX.md, HOW2-DRIVE-DOC-FIX.md, DONE.md, OPEN.md, PLAY-SENSE.md.
+Create (or confirm) a cherry-pick ledger: source hash -> claude hash -> what -> verified how.
+Label every claim READ / RAN / JUDGEMENT. A detached launch only counts as verified on the host.
+First task: finish the pending party-row commit (scoped add, push to origin/codex, cherry-pick onto claude), then ask me what's next.
+End every answer with: what you RAN, what you only READ, what is JUDGEMENT, and the single next smallest step.</pre>
+<button type="button" id="copy">📋 Copy prompt</button>
+<span id="msg" role="status" aria-live="polite"></span>
+
+<p class="honest">🧾 Everything above comes from <code>claude-handoff.md</code>. The recommendations are my opinion. I did not verify any commit hash, run any gate, or look at the working tree.</p>
+
+</main>
+<script>
+(function(){
+  var b=document.getElementById("copy"),m=document.getElementById("msg"),p=document.getElementById("prompt");
+  b.addEventListener("click",function(){
+    try{
+      navigator.clipboard.writeText(p.textContent).then(function(){m.textContent=" Copied.";},function(){m.textContent=" Select the text and copy it.";});
+    }catch(e){m.textContent=" Select the text and copy it.";}
+  });
+})();
+</script>
+</body>
+</html>
